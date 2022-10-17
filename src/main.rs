@@ -3,12 +3,22 @@ use macroquad::prelude::*;
 use macroquad_canvas::Canvas2D;
 
 
+const WIDTH: f32 = 1200_f32;
+const HEIGHT: f32 = 675_f32;
+
 #[macroquad::main("CWG 2022")]
 async fn main() {
     println!("Hello, Cars With(?) Guns 2022!");
 
-    let canvas = Canvas2D::new(800_f32, 600_f32);
-    
+    let canvas = Canvas2D::new(WIDTH, HEIGHT);
+
+    let bdg_screen = load_texture("assets/bdg_screen.png")
+	.await
+	.unwrap();
+
+    let title_screen = load_texture("assets/cwg_screen.png")
+	.await
+	.unwrap();
 
     let mut gilrs = Gilrs::new().unwrap();
 
@@ -40,6 +50,15 @@ async fn main() {
 	clear_background(WHITE);
 
 	// Draw inside canvas...
+
+	draw_rectangle(0.0, 0.0, 60.0, 60.0, RED);
+
+	draw_texture(
+	    bdg_screen,
+	    0.0,
+	    0.0,
+	    WHITE,
+	);
 
 	set_default_camera();
 
