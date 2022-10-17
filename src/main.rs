@@ -64,7 +64,7 @@ async fn main() {
 	draw_rectangle(0.0, 0.0, 60.0, 60.0, RED);
 
 	draw_texture(
-	    bdg_screen,
+	    title_screen,
 	    0.0,
 	    0.0,
 	    WHITE,
