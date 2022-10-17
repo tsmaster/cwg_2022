@@ -1,9 +1,14 @@
 use gilrs::{Gilrs, Button, Event};
+use macroquad::prelude::*;
+use macroquad_canvas::Canvas2D;
 
 
-fn main() {
+#[macroquad::main("CWG 2022")]
+async fn main() {
     println!("Hello, Cars With(?) Guns 2022!");
 
+    let canvas = Canvas2D::new(800_f32, 600_f32);
+    
 
     let mut gilrs = Gilrs::new().unwrap();
 
@@ -27,5 +32,19 @@ fn main() {
 		println!("Button South is pressed (XBox - A, PS - X)");
             }
 	}
+
+	// macroquad(canvas) 
+
+	set_camera(&canvas.camera);
+
+	clear_background(WHITE);
+
+	// Draw inside canvas...
+
+	set_default_camera();
+
+	canvas.draw();
+
+	next_frame().await
     }
 }
