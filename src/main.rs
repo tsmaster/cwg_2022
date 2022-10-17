@@ -6,7 +6,17 @@ use macroquad_canvas::Canvas2D;
 const WIDTH: f32 = 1200_f32;
 const HEIGHT: f32 = 675_f32;
 
-#[macroquad::main("CWG 2022")]
+fn window_conf() -> Conf {
+    Conf {
+	window_title: "CWG 2022".to_owned(),
+	window_width: WIDTH as i32,
+	window_height: HEIGHT as i32,
+	fullscreen: false,
+	..Default::default()
+    }
+}
+
+#[macroquad::main(window_conf)]
 async fn main() {
     println!("Hello, Cars With(?) Guns 2022!");
 
@@ -59,6 +69,8 @@ async fn main() {
 	    0.0,
 	    WHITE,
 	);
+
+	draw_text("CWG 2022", 20.0, 20.0, 30.0, DARKGRAY);
 
 	set_default_camera();
 
