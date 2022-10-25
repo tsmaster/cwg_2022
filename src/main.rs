@@ -1,7 +1,6 @@
-use gilrs::{Gilrs, Button, Event};
+//use gilrs::{Gilrs, Button, Event};
 use macroquad::prelude::*;
 use macroquad_canvas::Canvas2D;
-use std::time::SystemTime;
 
 use crate::mode::ModeMgr;
 use crate::mode::ModeTag;
@@ -74,7 +73,7 @@ async fn main() {
 	.unwrap();
 
 
-    
+    /*
 
     let mut gilrs = Gilrs::new().unwrap();
 
@@ -84,7 +83,7 @@ async fn main() {
     }
 
     let mut active_gamepad = None;
-    
+    */
 
     let mut mode_mgr = ModeMgr::new(ModeTag::BdgMode);
 
@@ -114,28 +113,21 @@ async fn main() {
     
     mode_mgr.register_mode(ModeTag::SettingsMode,
 			   Box::new(SettingsMode::new(settings_screen)));
-    
 
-    let mut prev_time = SystemTime::now();
-    let mut dt;
+    let mut prev_time = macroquad::time::get_time();
+    let mut dt: f32;
     
     loop {
-	let cur_time = SystemTime::now();
-	let last_frame_duration = prev_time.elapsed();
+	let cur_time = macroquad::time::get_time();
+	dt = (cur_time - prev_time) as f32;
 
 	if mode_mgr.get_current_mode_tag() == ModeTag::QuitMode {
 	    break;
 	}
 
-	match last_frame_duration {
-	    Ok(dur) => {dt = dur.as_millis() as f32 / 1000.0;},
-	    Err(_) => continue,
-	}
-
-	//println!("elapsed {}", dt);
-	
+/*
 	let mut event_vec = vec!();
-	
+
 	// Examine new events
 	while let Some(Event { id, event, time }) = gilrs.next_event() {
             println!("{:?} New event from {}: {:?}", time, id, event);
@@ -143,21 +135,23 @@ async fn main() {
 
 	    event_vec.push(event);
 	}
-	
+*/
+
 	if let Some(next_mode) =
 	    mode_mgr.get_current_mode().update(dt,
-					       event_vec,
+					       //event_vec,
 					       &canvas) {
 	    mode_mgr.set_current_mode(next_mode);
 	    continue;
 	}
 
+	/*
 	// You can also use cached gamepad state
 	if let Some(gamepad) = active_gamepad.map(|id| gilrs.gamepad(id)) {
             if gamepad.is_pressed(Button::South) {
 		println!("Button South is pressed (XBox - A, PS - X)");
             }
-	}
+	}*/
 
 	// macroquad(canvas) 
 
@@ -178,12 +172,11 @@ async fn main() {
 	);*/
 
 	draw_text("CWG 2022", 20.0, 20.0, 30.0, DARKGRAY);
-	
+
 	mode_mgr.get_current_mode().draw(&canvas);
 	
 	draw_text(&mode_mgr.get_current_mode().get_name(), 20.0, 50.0, 30.0, RED);
 
-	
 
 	set_default_camera();
 	

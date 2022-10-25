@@ -2,9 +2,9 @@
 //
 //
 
-use gilrs::EventType;
+//use gilrs::EventType;
 //use gilrs::EventType::ButtonChanged;
-use gilrs::EventType::ButtonPressed;
+//use gilrs::EventType::ButtonPressed;
 use macroquad::prelude::*;
 use macroquad_canvas::Canvas2D;
 
@@ -38,7 +38,7 @@ impl GameMode for SettingsMode {
 
     fn update(&mut self,
 	      dt_seconds: f32,
-	      events: Vec<EventType>,
+	      //events: Vec<EventType>,
 	      _canvas: &Canvas2D) -> Option<ModeTag> {
 	self.elapsed_seconds += dt_seconds;
 
@@ -46,6 +46,7 @@ impl GameMode for SettingsMode {
 	    return Some(ModeTag::CwgTitleMode);
 	}
 
+	/*
 	for e in events {
 	    match e {
 		ButtonPressed(dir, _code) => {
@@ -54,7 +55,7 @@ impl GameMode for SettingsMode {
 		},
 		_ => {}
 	    }
-	}
+	}*/
 	
 	None
     }

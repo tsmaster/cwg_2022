@@ -1,7 +1,7 @@
 // src/mode.rs
 
 use std::collections::HashMap;
-use gilrs::EventType;
+//use gilrs::EventType;
 use macroquad_canvas::Canvas2D;
 
 pub mod about_mode;
@@ -34,7 +34,7 @@ pub trait GameMode {
     
     fn update(&mut self,
 	      dt_seconds: f32,
-	      events: Vec<EventType>,
+	      //events: Vec<EventType>,
 	      canvas: &Canvas2D) -> Option<ModeTag>;
 
     fn draw(&self, canvas: &Canvas2D);

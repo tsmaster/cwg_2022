@@ -2,9 +2,9 @@
 //
 //
 
-use gilrs::EventType;
+//use gilrs::EventType;
 //use gilrs::EventType::ButtonChanged;
-use gilrs::EventType::ButtonPressed;
+//use gilrs::EventType::ButtonPressed;
 use macroquad::prelude::*;
 use macroquad_canvas::Canvas2D;
 
@@ -38,13 +38,14 @@ impl GameMode for CwgTitleMode {
 
     fn update(&mut self,
 	      dt_seconds: f32,
-	      events: Vec<EventType>,
+	      //events: Vec<EventType>,
 	      _canvas: &Canvas2D) -> Option<ModeTag> {
 	self.elapsed_seconds += dt_seconds;
 
 	if self.elapsed_seconds >= self.display_seconds {
 	    return Some(ModeTag::MenuMode);
 	}
+	/*
 
 	for e in events {
 	    match e {
@@ -56,7 +57,7 @@ impl GameMode for CwgTitleMode {
 		_ => {}
 	    }
 	    //println!("bdg event: {:?}", e);
-	}	
+	}*/	
 
 	None
     }

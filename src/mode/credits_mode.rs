@@ -2,8 +2,8 @@
 //
 //
 
-use gilrs::EventType;
-use gilrs::EventType::*;
+//use gilrs::EventType;
+//use gilrs::EventType::*;
 use macroquad::prelude::*;
 use macroquad_canvas::Canvas2D;
 
@@ -32,23 +32,25 @@ impl GameMode for CreditsMode {
     }
 
     fn update(&mut self,
-	      dt_seconds: f32,
-	      events: Vec<EventType>,
+	      _dt_seconds: f32,
+	      //events: Vec<EventType>,
 	      _canvas: &Canvas2D) -> Option<ModeTag> {
 
+	/*
 	for evt in events {
+	    
 	    match evt {
-		ButtonPressed(dir, _code) => {
+		ButtonPressed(_dir, _code) => {
 		    return Some(ModeTag::MenuMode);
 		},
 		_ => {}
 	    }
-	}
+	}*/
 	
 	None
     }
 
-    fn draw(&self, canvas: &Canvas2D) {
+    fn draw(&self, _canvas: &Canvas2D) {
 	draw_texture(self.screen,
 		     0.0,
 		     0.0,

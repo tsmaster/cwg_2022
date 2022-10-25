@@ -2,9 +2,9 @@
 //
 //
 
-use gilrs::EventType;
+//use gilrs::EventType;
 //use gilrs::EventType::ButtonChanged;
-use gilrs::EventType::ButtonPressed;
+//use gilrs::EventType::ButtonPressed;
 use macroquad::prelude::*;
 use macroquad_canvas::Canvas2D;
 
@@ -33,20 +33,21 @@ impl GameMode for AboutMode {
     }
 
     fn update(&mut self,
-	      dt_seconds: f32,
-	      events: Vec<EventType>,
+	      _dt_seconds: f32,
+	      //events: Vec<EventType>,
 	      _canvas: &Canvas2D) -> Option<ModeTag> {
 
+	/*
 	for e in events {
 	    match e {
-		ButtonPressed(dir, _code) => {
-		    println!("about button {:?}", dir);
+		ButtonPressed(_dir, _code) => {
+		    //println!("about button {:?}", dir);
 		    return Some(ModeTag::MenuMode);
 		},
 		_ => {}
 	    }
 	}
-	
+	*/
 	None
     }
 

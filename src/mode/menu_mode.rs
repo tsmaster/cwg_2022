@@ -2,7 +2,7 @@
 //
 //
 
-use gilrs::EventType;
+//use gilrs::EventType;
 use macroquad::prelude::*;
 use macroquad_canvas::Canvas2D;
 
@@ -111,7 +111,7 @@ impl GameMode for MenuMode {
 
     fn update(&mut self,
 	      _dt_seconds: f32,
-	      events: Vec<EventType>,
+	      //_events: Vec<EventType>,
 	      canvas: &Canvas2D) -> Option<ModeTag> {
 
 	let (canvas_mouse_x, canvas_mouse_y) = canvas.mouse_position();
@@ -147,18 +147,12 @@ impl GameMode for MenuMode {
 			   (btn.bottom - btn.top) as f32,
 			   DARKGRAY);
 
-	    let btn_height = (btn.bottom - btn.top) as f32;
-	    let text_offset = btn_height as f32 * 0.75;
-
 	    let font_size = 40.0;
 	    
 	    let text_dims = measure_text(&btn.name,
 					 None,
 					 font_size as u16,
 					 1.0);
-
-	    //println!("name: {}, btn height: {}, td h: {}", &btn.name,
-	//	     btn_height, text_dims.height);
 
 	    let btn_width = btn.right - btn.left;
 	    let text_x_offset = (btn_width as f32 - text_dims.width) / 2.0;
