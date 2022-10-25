@@ -10,18 +10,15 @@ use macroquad_canvas::Canvas2D;
 
 use crate::mode::GameMode;
 use crate::mode::ModeTag;
+use crate::text::*;
 
 pub struct AboutMode {
-    elapsed_seconds : f32,
-    display_seconds : f32,
     screen : Texture2D,
 }
 
 impl AboutMode {
     pub fn new(scr: Texture2D) -> AboutMode {
 	AboutMode {
-	    elapsed_seconds: 0.0,
-	    display_seconds: 5.0,
 	    screen: scr,
 	}
     }
@@ -33,24 +30,18 @@ impl GameMode for AboutMode {
     }
 
     fn init(&mut self) {
-	self.elapsed_seconds = 0.0
     }
 
     fn update(&mut self,
 	      dt_seconds: f32,
 	      events: Vec<EventType>,
 	      _canvas: &Canvas2D) -> Option<ModeTag> {
-	self.elapsed_seconds += dt_seconds;
-
-	if self.elapsed_seconds > self.display_seconds {
-	    return Some(ModeTag::CwgTitleMode);
-	}
 
 	for e in events {
 	    match e {
 		ButtonPressed(dir, _code) => {
 		    println!("about button {:?}", dir);
-		    return Some(ModeTag::CwgTitleMode);
+		    return Some(ModeTag::MenuMode);
 		},
 		_ => {}
 	    }
@@ -64,5 +55,23 @@ impl GameMode for AboutMode {
 		     0.0,
 		     0.0,
 		     WHITE);
+
+	let about_text = "
+Cars With Guns (2022)
+
+This is a game about cars. Maybe with guns.
+
+Cars are not yet implemented. Guns are not yet 
+implemented.
+
+I'm writing this in Rust, as an effort to learn 
+Rust.
+";
+	for (i,line) in about_text.lines().enumerate() {
+	    draw_outlined(line,
+			  50.0, 50.0 + i as f32 * 50.0, 50.0,
+			  WHITE, DARKGRAY);
+	    
+	}
     }
 }

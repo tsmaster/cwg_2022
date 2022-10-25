@@ -3,11 +3,13 @@
 //
 
 use gilrs::EventType;
+use gilrs::EventType::*;
 use macroquad::prelude::*;
 use macroquad_canvas::Canvas2D;
 
 use crate::mode::GameMode;
 use crate::mode::ModeTag;
+use crate::text::*;
 
 pub struct CreditsMode {
     screen : Texture2D,
@@ -34,6 +36,14 @@ impl GameMode for CreditsMode {
 	      events: Vec<EventType>,
 	      _canvas: &Canvas2D) -> Option<ModeTag> {
 
+	for evt in events {
+	    match evt {
+		ButtonPressed(dir, _code) => {
+		    return Some(ModeTag::MenuMode);
+		},
+		_ => {}
+	    }
+	}
 	
 	None
     }
@@ -43,5 +53,18 @@ impl GameMode for CreditsMode {
 		     0.0,
 		     0.0,
 		     WHITE);
+
+	let credits_text = "
+Credits
+
+Code:        Dave LeCompte
+Some Assets: Kenney.nl
+
+";
+	for (i,line) in credits_text.lines().enumerate() {
+	    draw_outlined(line,
+			  50.0, 50.0 + i as f32 * 50.0, 50.0,
+			  WHITE, DARKGRAY);
+	}
     }
 }

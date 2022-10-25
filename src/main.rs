@@ -16,6 +16,7 @@ use crate::mode::quit_mode::QuitMode;
 use crate::mode::settings_mode::SettingsMode;
 
 mod mode;
+mod text;
 
 const WIDTH: f32 = 1200_f32;
 const HEIGHT: f32 = 675_f32;
