@@ -1,4 +1,4 @@
-// mode/cwg_title_mode.rs
+// mode/new_game_mode.rs
 //
 //
 
@@ -11,29 +11,29 @@ use macroquad_canvas::Canvas2D;
 use crate::mode::GameMode;
 use crate::mode::ModeTag;
 
-pub struct CwgTitleMode{
+pub struct NewGameMode {
     elapsed_seconds : f32,
-    display_seconds: f32,
-    screen: Texture2D,
+    display_seconds : f32,
+    screen : Texture2D,
 }
 
-impl CwgTitleMode {
-    pub fn new(scr: Texture2D) -> CwgTitleMode {
-	CwgTitleMode {
+impl NewGameMode {
+    pub fn new(scr: Texture2D) -> NewGameMode {
+	NewGameMode {
 	    elapsed_seconds: 0.0,
-	    display_seconds: 3.0,
+	    display_seconds: 5.0,
 	    screen: scr,
 	}
     }
 }
 
-impl GameMode for CwgTitleMode {
+impl GameMode for NewGameMode {
     fn get_name(&self) -> String {
-	"CwgTitleMode".to_string()
+	"NewGameMode".to_string()
     }
 
     fn init(&mut self) {
-	self.elapsed_seconds = 0.0;
+	self.elapsed_seconds = 0.0
     }
 
     fn update(&mut self,
@@ -42,26 +42,24 @@ impl GameMode for CwgTitleMode {
 	      _canvas: &Canvas2D) -> Option<ModeTag> {
 	self.elapsed_seconds += dt_seconds;
 
-	if self.elapsed_seconds >= self.display_seconds {
-	    return Some(ModeTag::MenuMode);
+	if self.elapsed_seconds > self.display_seconds {
+	    return Some(ModeTag::CwgTitleMode);
 	}
 
 	for e in events {
 	    match e {
-		ButtonPressed(dir, code) => {
-		    println!("cwg button dir {:?}", dir);
-		    println!("cwg button code {:?}", code);
-		    return Some(ModeTag::MenuMode);
+		ButtonPressed(dir, _code) => {
+		    println!("bdg button {:?}", dir);
+		    return Some(ModeTag::CwgTitleMode);
 		},
 		_ => {}
 	    }
-	    //println!("bdg event: {:?}", e);
-	}	
-
+	}
+	
 	None
     }
 
-    fn draw(&self, _canvas: &Canvas2D) {
+    fn draw(&self, _canvas:&Canvas2D) {
 	draw_texture(self.screen,
 		     0.0,
 		     0.0,

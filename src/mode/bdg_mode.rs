@@ -6,6 +6,7 @@ use gilrs::EventType;
 //use gilrs::EventType::ButtonChanged;
 use gilrs::EventType::ButtonPressed;
 use macroquad::prelude::*;
+use macroquad_canvas::Canvas2D;
 
 use crate::mode::GameMode;
 use crate::mode::ModeTag;
@@ -35,7 +36,10 @@ impl GameMode for BdgMode {
 	self.elapsed_seconds = 0.0
     }
 
-    fn update(&mut self, dt_seconds: f32, events: Vec<EventType>) -> Option<ModeTag> {
+    fn update(&mut self,
+	      dt_seconds: f32,
+	      events: Vec<EventType>,
+	      _canvas: &Canvas2D) -> Option<ModeTag> {
 	self.elapsed_seconds += dt_seconds;
 
 	if self.elapsed_seconds > self.display_seconds {
@@ -56,7 +60,7 @@ impl GameMode for BdgMode {
 	None
     }
 
-    fn draw(&self) {
+    fn draw(&self, _canvas:&Canvas2D) {
 	draw_texture(self.screen,
 		     0.0,
 		     0.0,

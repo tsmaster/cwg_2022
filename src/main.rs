@@ -5,10 +5,15 @@ use std::time::SystemTime;
 
 use crate::mode::ModeMgr;
 use crate::mode::ModeTag;
+use crate::mode::about_mode::AboutMode;
 use crate::mode::bdg_mode::BdgMode;
+use crate::mode::credits_mode::CreditsMode;
 use crate::mode::cwg_title_mode::CwgTitleMode;
 use crate::mode::menu_mode::MenuMode;
-use crate::mode::credits_mode::CreditsMode;
+use crate::mode::new_game_mode::NewGameMode;
+use crate::mode::play_mode::PlayMode;
+use crate::mode::quit_mode::QuitMode;
+use crate::mode::settings_mode::SettingsMode;
 
 mod mode;
 
@@ -47,6 +52,29 @@ async fn main() {
 	.await
 	.unwrap();
 
+    let new_game_screen = load_texture("assets/new_game_screen.png")
+	.await
+	.unwrap();
+
+    let play_screen = load_texture("assets/play_screen.png")
+	.await
+	.unwrap();
+
+    let quit_screen = load_texture("assets/quit_screen.png")
+	.await
+	.unwrap();
+
+    let settings_screen = load_texture("assets/settings_screen.png")
+	.await
+	.unwrap();
+
+    let about_screen = load_texture("assets/about_screen.png")
+	.await
+	.unwrap();
+
+
+    
+
     let mut gilrs = Gilrs::new().unwrap();
 
     // Iterate over all connected gamepads
@@ -70,6 +98,21 @@ async fn main() {
 
     mode_mgr.register_mode(ModeTag::CreditsMode,
 			   Box::new(CreditsMode::new(credits_screen)));
+    
+    mode_mgr.register_mode(ModeTag::AboutMode,
+			   Box::new(AboutMode::new(about_screen)));
+    
+    mode_mgr.register_mode(ModeTag::NewGameMode,
+			   Box::new(NewGameMode::new(new_game_screen)));
+    
+    mode_mgr.register_mode(ModeTag::PlayMode,
+			   Box::new(PlayMode::new(play_screen)));
+    
+    mode_mgr.register_mode(ModeTag::QuitMode,
+			   Box::new(QuitMode::new(quit_screen)));
+    
+    mode_mgr.register_mode(ModeTag::SettingsMode,
+			   Box::new(SettingsMode::new(settings_screen)));
     
 
     let mut prev_time = SystemTime::now();
@@ -96,7 +139,10 @@ async fn main() {
 	    event_vec.push(event);
 	}
 	
-	if let Some(next_mode) = mode_mgr.get_current_mode().update(dt, event_vec) {
+	if let Some(next_mode) =
+	    mode_mgr.get_current_mode().update(dt,
+					       event_vec,
+					       &canvas) {
 	    mode_mgr.set_current_mode(next_mode);
 	    continue;
 	}
@@ -116,20 +162,23 @@ async fn main() {
 
 	// Draw inside canvas...
 
-	draw_rectangle(0.0, 0.0, 60.0, 60.0, RED);
+	//draw_rectangle(0.0, 0.0, 60.0, 60.0, RED);
 
+	/*
 	draw_texture(
 	    title_screen,
 	    0.0,
 	    0.0,
 	    WHITE,
-	);
+	);*/
 
 	draw_text("CWG 2022", 20.0, 20.0, 30.0, DARKGRAY);
 	
+	mode_mgr.get_current_mode().draw(&canvas);
+	
 	draw_text(&mode_mgr.get_current_mode().get_name(), 20.0, 50.0, 30.0, RED);
 
-	mode_mgr.get_current_mode().draw();
+	
 
 	set_default_camera();
 	

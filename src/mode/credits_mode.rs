@@ -4,6 +4,7 @@
 
 use gilrs::EventType;
 use macroquad::prelude::*;
+use macroquad_canvas::Canvas2D;
 
 use crate::mode::GameMode;
 use crate::mode::ModeTag;
@@ -28,13 +29,16 @@ impl GameMode for CreditsMode {
     fn init(&mut self) {
     }
 
-    fn update(&mut self, dt_seconds: f32, events: Vec<EventType>) -> Option<ModeTag> {
+    fn update(&mut self,
+	      dt_seconds: f32,
+	      events: Vec<EventType>,
+	      _canvas: &Canvas2D) -> Option<ModeTag> {
 
 	
 	None
     }
 
-    fn draw(&self) {
+    fn draw(&self, canvas: &Canvas2D) {
 	draw_texture(self.screen,
 		     0.0,
 		     0.0,
