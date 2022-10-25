@@ -57,6 +57,10 @@ impl ModeMgr {
 	self.mode_registry.insert(tag, mode);
     }
 
+    pub fn get_current_mode_tag(&self) -> ModeTag {
+	self.current_mode_tag
+    }
+
     pub fn get_current_mode(&mut self) -> &mut dyn GameMode {
 	&mut **self.mode_registry.get_mut(&self.current_mode_tag).unwrap()
     }

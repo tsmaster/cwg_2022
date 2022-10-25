@@ -122,6 +122,10 @@ async fn main() {
 	let cur_time = SystemTime::now();
 	let last_frame_duration = prev_time.elapsed();
 
+	if mode_mgr.get_current_mode_tag() == ModeTag::QuitMode {
+	    break;
+	}
+
 	match last_frame_duration {
 	    Ok(dur) => {dt = dur.as_millis() as f32 / 1000.0;},
 	    Err(_) => continue,
