@@ -94,3 +94,31 @@ much less time than that.)
 
 I could also have loading screen, say between menu and gameplay.
 
+
+## October 27, 2022
+
+I made a build of the "game" for WASM, which normally isn't a big
+deal, but one thing that's not super transparent is that if you pull
+in packages that don't work well with macroquad is that you get a
+blank screen and a couple cryptic error messages, including one about
+the version of GL.js being incorrect. One can dig into the current
+macroquad examples and get a different version, but the other error is
+trying to tell you that you've got an incompatible package.
+
+I had been using std::SystemTime for time and gilrs for gamepad, which
+I binary-searched to figure out was causing trouble. After commenting
+those out, I made a working web build, which does work, but means that
+navigating my menu system, which I used to support using the gamepad
+buttons, now needs to be wired up for keyboard and mouse. It always
+needed to, but now it's more pressing.
+
+Also, there might be gamepad libraries that work with macroquad and
+with wasm? TODO look into that.
+
+I was away from my computer all day yesterday, which left my brain
+active, and I dumped a bunch of thoughts onto a paper notebook. Much
+of those thoughts echo the TODO doc I had for CWG 2021, which is good,
+it illustrates that those are still important and near top of mind.
+
+TODO: transfer the full paper notebook and also the 2021 CWG TODO
+Google Doc into this project's TODO doc.
