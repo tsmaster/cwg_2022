@@ -15,9 +15,9 @@ use crate::mode::quit_mode::QuitMode;
 use crate::mode::settings_mode::SettingsMode;
 use crate::mode::arena_mode::ArenaMode;
 
-
 mod mode;
 mod text;
+mod math;
 
 const WIDTH: f32 = 1200_f32;
 const HEIGHT: f32 = 675_f32;

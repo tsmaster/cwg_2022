@@ -14,6 +14,7 @@ pub mod play_mode;
 pub mod quit_mode;
 pub mod settings_mode;
 pub mod arena_mode;
+pub mod car;
 
 #[derive(Eq, Hash, PartialEq, Clone, Copy)]
 pub enum ModeTag {
@@ -69,6 +70,8 @@ impl ModeMgr {
     
     pub fn set_current_mode(&mut self, tag : ModeTag) {
 	self.current_mode_tag = tag;
+
+	self.get_current_mode().init();
     }
 }
 

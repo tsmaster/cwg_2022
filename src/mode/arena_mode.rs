@@ -8,9 +8,103 @@
 use macroquad::prelude::*;
 use macroquad_canvas::Canvas2D;
 
+use crate::math::vectors::Vec2f;
+use crate::math::utils::degrees_to_radians;
 use crate::mode::GameMode;
 use crate::mode::ModeTag;
+use crate::mode::car::Car;
+use crate::mode::car::CarControls;
 
+#[derive(Debug, Clone, Copy)]
+enum CarControlMode {
+    PlayerKBControlArrows,
+    PlayerKBControlWasd,
+    PlayerMouseControl,
+    //PlayerGamepadControl,
+    AiRandomWalk
+}
+
+struct CarBinding {
+    texture_params: DrawTextureParams,
+    physics: Car,
+    control_mode: CarControlMode,
+    sprite: Texture2D,
+}
+
+impl CarBinding {
+    fn update(&mut self, dt: f32) {
+	let control_input = match self.control_mode {
+	    CarControlMode::PlayerKBControlArrows => self.get_kb_arrow_control_input(),
+	    CarControlMode::PlayerKBControlWasd => self.get_kb_wasd_control_input(),
+	    CarControlMode::PlayerMouseControl => self.get_mouse_control_input(),
+	    CarControlMode::AiRandomWalk => self.get_ai_random_walk_control_input()
+	};
+
+	self.physics.update(dt, &control_input);
+    }
+
+    fn draw(&self) {
+	// println!("drawing at {:?}", self.physics.position);
+
+	let mut tex_params = copy_params(&self.texture_params);
+	tex_params.rotation = degrees_to_radians(self.physics.heading_degrees);
+	
+	draw_texture_ex(self.sprite,
+			self.physics.position.x,
+			self.physics.position.y,
+			WHITE,
+			tex_params);
+    }
+
+    fn get_kb_wasd_control_input(&self) -> CarControls {
+	CarControls {
+	    steering: 0.0,
+	    acceleration: 0.0,
+	    brake: 0.0
+	}
+    }
+
+    fn get_kb_arrow_control_input(&self) -> CarControls {
+	let s = if is_key_down(KeyCode::Left) {
+	    -1.0
+	} else {
+	    if is_key_down(KeyCode::Right) {
+		1.0
+	    } else {
+		0.0
+	    }
+	};
+
+	CarControls {
+	    steering: s,
+	    acceleration: if is_key_down(KeyCode::Up) { 1.0 } else { 0.0 },
+	    brake: if is_key_down(KeyCode::Down) { 1.0 } else {0.0}
+	}
+    }
+    
+    fn get_mouse_control_input(&self) -> CarControls {
+	CarControls {
+	    steering: 0.0,
+	    acceleration: 0.0,
+	    brake: 0.0
+	}
+    }
+    
+    fn get_ai_random_walk_control_input(&self) -> CarControls {
+	let throttle = macroquad::rand::gen_range(-1.0, 1.0);
+
+	let acc = f32::max(throttle, 0.0);
+	let brk = -1.0 * f32::min(0.0, throttle);
+	
+	CarControls {
+	    steering: macroquad::rand::gen_range(-1.0, 1.0),
+	    acceleration: acc,
+	    brake: brk
+	}
+    }
+    
+    
+}
 
 fn copy_params(in_param: &DrawTextureParams) -> DrawTextureParams {
     DrawTextureParams {
@@ -210,6 +304,7 @@ pub struct ArenaMode {
     car_sprites: Vec<Texture2D>,
     params: Vec<DrawTextureParams>,
     tile_idx_arr: Vec<Vec<usize>>,
+    cars: Vec<CarBinding>,
 }
 
 
@@ -244,6 +339,7 @@ impl ArenaMode {
 			       vec!{ 0,  8,  9, 10, 11,  8,  8,  9,  9,  8,  9, 10, 11,  8,  8,  9,  9,  8,  9, 10, 11,  8,  8,  9,  9,  8,  9, 10, 11,  8,  8,  8,  8,  8,  8,  9,  2},
 			       vec!{ 0,  1,  2,  3,  4,  5,  6,  7,  0,  1,  2,  3,  4,  5,  6,  7,  0,  1,  2,  3,  4,  5,  6,  7,  0,  1,  2,  3,  4,  5,  6,  7,  0,  1,  2,  3,  7},
 	    },
+	    cars: vec!(),
 	}
     }
 }
@@ -254,16 +350,53 @@ impl GameMode for ArenaMode {
     }
 
     fn init(&mut self) {
+	self.cars.clear();
 
+	self.cars.push(CarBinding {
+	    texture_params: DrawTextureParams {
+		dest_size: Some(Vec2 {x: 64.0,
+				      y: 32.0}),
+		source: None,
+		rotation: 0.0,
+		flip_x: false,
+		flip_y: false,
+		pivot: None
+	    },
+	    physics: Car::new(&Vec2f::new(100.0, 100.0),
+			      0.0),
+	    control_mode: CarControlMode::AiRandomWalk,
+	    sprite: self.car_sprites[0],
+	});
+
+	self.cars.push(CarBinding {
+	    texture_params: DrawTextureParams {
+		dest_size: Some(Vec2 {x: 64.0,
+				      y: 32.0}),
+		source: None,
+		rotation: 0.0,
+		flip_x: false,
+		flip_y: false,
+		pivot: None
+	    },
+	    physics: Car::new(&Vec2f::new(100.0, 160.0),
+			      0.0),
+	    control_mode: CarControlMode::PlayerKBControlArrows,
+	    sprite: self.car_sprites[1],
+	});
     }
 
     fn update(&mut self,
-	      _dt_seconds: f32,
+	      dt_seconds: f32,
 	      _canvas: &Canvas2D) -> Option<ModeTag> {
 
 	if is_key_pressed(KeyCode::Escape) {
 	    return Some(ModeTag::MenuMode);
 	}
+
+	for mut car in self.cars.iter_mut() {
+	    car.update(dt_seconds);
+	}
+	
 	None
     }
 
@@ -284,6 +417,7 @@ impl GameMode for ArenaMode {
 	    }
 	}
 
+	/*
 	let car_params = DrawTextureParams {
 	    dest_size: Some(Vec2{x: 64.0,
 				 y: 32.0}),
@@ -292,9 +426,10 @@ impl GameMode for ArenaMode {
 	    flip_x: false,
 	    flip_y: false,
 	    pivot: None
-	};
+	};*/
 
 
+	/*
 	let x_space = 96.0;
 	let y_space = 64.0;
 	
@@ -345,6 +480,12 @@ impl GameMode for ArenaMode {
 			100.0 + 1.0 * y_space,
 			WHITE,
 			copy_params(&car_params));
+
+	 */
+
+	for car in &self.cars {
+	    car.draw();
+	}
 	
 	
 	/*
