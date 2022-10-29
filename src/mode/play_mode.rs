@@ -42,9 +42,10 @@ impl GameMode for PlayMode {
 	      _canvas: &Canvas2D) -> Option<ModeTag> {
 	self.elapsed_seconds += dt_seconds;
 
+	/*
 	if self.elapsed_seconds > self.display_seconds {
 	    return Some(ModeTag::CwgTitleMode);
-	}
+	}*/
 
 	/*
 	for e in events {
@@ -57,7 +58,9 @@ impl GameMode for PlayMode {
 	    }
 	}*/
 	
-	None
+	//None
+
+	Some(ModeTag::ArenaMode)
     }
 
     fn draw(&self, _canvas:&Canvas2D) {

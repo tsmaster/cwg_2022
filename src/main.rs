@@ -13,6 +13,8 @@ use crate::mode::new_game_mode::NewGameMode;
 use crate::mode::play_mode::PlayMode;
 use crate::mode::quit_mode::QuitMode;
 use crate::mode::settings_mode::SettingsMode;
+use crate::mode::arena_mode::ArenaMode;
+
 
 mod mode;
 mod text;
@@ -72,6 +74,50 @@ async fn main() {
 	.await
 	.unwrap();
 
+    let pixel_shmup_tiles = load_texture("assets/Kenney/pixel_shmup_tiles_packed.png")
+	.await
+	.unwrap();
+
+    let car_0_sprite = load_texture("assets/car_0.png")
+	.await
+	.unwrap();
+
+    let car_1_sprite = load_texture("assets/car_1.png")
+	.await
+	.unwrap();
+
+    let car_2_sprite = load_texture("assets/car_2.png")
+	.await
+	.unwrap();
+
+    let car_3_sprite = load_texture("assets/car_3.png")
+	.await
+	.unwrap();
+
+    let car_4_sprite = load_texture("assets/car_4.png")
+	.await
+	.unwrap();
+
+    let car_5_sprite = load_texture("assets/car_5.png")
+	.await
+	.unwrap();
+
+    let car_6_sprite = load_texture("assets/car_6.png")
+	.await
+	.unwrap();
+
+    let car_7_sprite = load_texture("assets/car_7.png")
+	.await
+	.unwrap();
+
+    let car_sprites = vec!{car_0_sprite,
+			   car_1_sprite,
+			   car_2_sprite,
+			   car_3_sprite,
+			   car_4_sprite,
+			   car_5_sprite,
+			   car_6_sprite,
+			   car_7_sprite};
 
     /*
 
@@ -113,6 +159,12 @@ async fn main() {
     
     mode_mgr.register_mode(ModeTag::SettingsMode,
 			   Box::new(SettingsMode::new(settings_screen)));
+
+    mode_mgr.register_mode(ModeTag::ArenaMode,
+			   Box::new(ArenaMode::new(settings_screen,
+						   pixel_shmup_tiles,
+						   car_sprites)));
+    
 
     let mut prev_time = macroquad::time::get_time();
     let mut dt: f32;

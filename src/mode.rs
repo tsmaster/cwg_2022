@@ -13,6 +13,7 @@ pub mod new_game_mode;
 pub mod play_mode;
 pub mod quit_mode;
 pub mod settings_mode;
+pub mod arena_mode;
 
 #[derive(Eq, Hash, PartialEq, Clone, Copy)]
 pub enum ModeTag {
@@ -24,6 +25,7 @@ pub enum ModeTag {
     CreditsMode,
     AboutMode,
     SettingsMode,
+    ArenaMode,
     QuitMode,
 }
 
