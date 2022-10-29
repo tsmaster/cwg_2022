@@ -46,17 +46,12 @@ impl GameMode for BdgMode {
 	    return Some(ModeTag::CwgTitleMode);
 	}
 
-	match get_char_pressed() {
-	    None => {},
-	    Some(c) => {
-		println!("got key code {}", c as u8);
-		
-		if c == char::from_u32(27).unwrap() {
-		    return Some(ModeTag::MenuMode);
-		} else {
-		    return Some(ModeTag::CwgTitleMode);
-		}
-	    }
+	if is_key_pressed(KeyCode::Space) || is_mouse_button_pressed(MouseButton::Left) {
+	    return Some(ModeTag::CwgTitleMode);
+	}
+
+	if is_key_pressed(KeyCode::Escape) {
+	    return Some(ModeTag::MenuMode);
 	}
 
 	/*

@@ -206,9 +206,6 @@ fn make_params_vec() -> Vec<DrawTextureParams> {
 
 
 pub struct ArenaMode {
-    elapsed_seconds : f32,
-    display_seconds : f32,
-    bg_screen : Texture2D,
     tiles: Texture2D,
     car_sprites: Vec<Texture2D>,
     params: Vec<DrawTextureParams>,
@@ -218,13 +215,10 @@ pub struct ArenaMode {
 
 
 impl ArenaMode {
-    pub fn new(bg: Texture2D, tiles: Texture2D, car_sprites: Vec<Texture2D>) -> ArenaMode {
+    pub fn new(tiles: Texture2D, car_sprites: Vec<Texture2D>) -> ArenaMode {
 	tiles.set_filter(FilterMode::Nearest);
 	
 	ArenaMode {
-	    elapsed_seconds: 0.0,
-	    display_seconds: 5.0,
-	    bg_screen: bg,
 	    tiles: tiles,
 	    car_sprites: car_sprites,
 	    params: make_params_vec(),
@@ -260,31 +254,12 @@ impl GameMode for ArenaMode {
     }
 
     fn init(&mut self) {
-	self.elapsed_seconds = 0.0
+
     }
 
     fn update(&mut self,
-	      dt_seconds: f32,
-	      //events: Vec<EventType>,
+	      _dt_seconds: f32,
 	      _canvas: &Canvas2D) -> Option<ModeTag> {
-	self.elapsed_seconds += dt_seconds;
-
-	/*
-	if self.elapsed_seconds > self.display_seconds {
-	    return Some(ModeTag::CwgTitleMode);
-	}*/
-
-	/*
-	for e in events {
-	match e {
-	ButtonPressed(dir, _code) => {
-	println!("play button {:?}", dir);
-	return Some(ModeTag::CwgTitleMode);
-    },
-	_ => {}
-    }
-    }*/
-	
 	None
     }
 
@@ -292,12 +267,6 @@ impl GameMode for ArenaMode {
 
 	clear_background(BLACK);
 	
-	/*
-	draw_texture(self.bg_screen,
-		     0.0,
-		     0.0,
-		     WHITE);*/
-
 	for y in 0..self.tile_idx_arr.len() {
 	    for x in 0..self.tile_idx_arr[y].len() {
 		let tile_idx = self.tile_idx_arr[y][x];

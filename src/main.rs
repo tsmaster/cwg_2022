@@ -161,8 +161,7 @@ async fn main() {
 			   Box::new(SettingsMode::new(settings_screen)));
 
     mode_mgr.register_mode(ModeTag::ArenaMode,
-			   Box::new(ArenaMode::new(settings_screen,
-						   pixel_shmup_tiles,
+			   Box::new(ArenaMode::new(pixel_shmup_tiles,
 						   car_sprites)));
     
 
@@ -194,7 +193,6 @@ async fn main() {
 					       //event_vec,
 					       &canvas) {
 	    mode_mgr.set_current_mode(next_mode);
-	    continue;
 	}
 
 	/*

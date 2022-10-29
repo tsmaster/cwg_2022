@@ -12,16 +12,12 @@ use crate::mode::GameMode;
 use crate::mode::ModeTag;
 
 pub struct SettingsMode {
-    elapsed_seconds : f32,
-    display_seconds : f32,
     screen : Texture2D,
 }
 
 impl SettingsMode {
     pub fn new(scr: Texture2D) -> SettingsMode {
 	SettingsMode {
-	    elapsed_seconds: 0.0,
-	    display_seconds: 5.0,
 	    screen: scr,
 	}
     }
@@ -33,29 +29,18 @@ impl GameMode for SettingsMode {
     }
 
     fn init(&mut self) {
-	self.elapsed_seconds = 0.0
     }
 
     fn update(&mut self,
-	      dt_seconds: f32,
-	      //events: Vec<EventType>,
+	      _dt_seconds: f32,
 	      _canvas: &Canvas2D) -> Option<ModeTag> {
-	self.elapsed_seconds += dt_seconds;
-
-	if self.elapsed_seconds > self.display_seconds {
-	    return Some(ModeTag::CwgTitleMode);
+	if is_key_pressed(KeyCode::Space) || is_mouse_button_pressed(MouseButton::Left) {
+	    return Some(ModeTag::MenuMode);
 	}
 
-	/*
-	for e in events {
-	    match e {
-		ButtonPressed(dir, _code) => {
-		    println!("settings button {:?}", dir);
-		    return Some(ModeTag::CwgTitleMode);
-		},
-		_ => {}
-	    }
-	}*/
+	if is_key_pressed(KeyCode::Escape) {
+	    return Some(ModeTag::MenuMode);
+	}
 	
 	None
     }

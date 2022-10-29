@@ -46,10 +46,14 @@ impl GameMode for CwgTitleMode {
 	    return Some(ModeTag::MenuMode);
 	}
 
-	match get_char_pressed() {
-	    None => {},
-	    Some(_) => { return Some(ModeTag::MenuMode); }
+	if is_key_pressed(KeyCode::Space) || is_mouse_button_pressed(MouseButton::Left) {
+	    return Some(ModeTag::MenuMode);
 	}
+
+	if is_key_pressed(KeyCode::Escape) {
+	    return Some(ModeTag::MenuMode);
+	}
+
 
 	
 	/*

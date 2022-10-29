@@ -133,8 +133,8 @@ impl GameMode for MenuMode {
 	None
     }
 
-    fn draw(&self, canvas:&Canvas2D) {
-	let (canvas_mouse_x, canvas_mouse_y) = canvas.mouse_position();
+    fn draw(&self, _canvas:&Canvas2D) {
+	//let (canvas_mouse_x, canvas_mouse_y) = canvas.mouse_position();
 	
 	draw_texture(self.screen,
 		     0.0,
@@ -167,12 +167,13 @@ impl GameMode for MenuMode {
 		      WHITE);	    
 	}
 
+	/*
 	let mut cursor_color = self.cursor_color;
 
 	if macroquad::input::is_mouse_button_down(MouseButton::Left) {
 	    cursor_color = GREEN;
-	}
+	}*/
 
-        draw_circle(canvas_mouse_x, canvas_mouse_y, 20.0, cursor_color);
+        //draw_circle(canvas_mouse_x, canvas_mouse_y, 20.0, cursor_color);
     }
 }

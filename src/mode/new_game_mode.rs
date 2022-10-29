@@ -46,6 +46,16 @@ impl GameMode for NewGameMode {
 	    return Some(ModeTag::CwgTitleMode);
 	}
 
+	if is_key_pressed(KeyCode::Space) || is_mouse_button_pressed(MouseButton::Left) {
+	    return Some(ModeTag::MenuMode);
+	}
+
+	if is_key_pressed(KeyCode::Escape) {
+	    return Some(ModeTag::MenuMode);
+	}
+
+	
+
 	/*
 	for e in events {
 	    match e {
