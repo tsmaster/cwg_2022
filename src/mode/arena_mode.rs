@@ -260,6 +260,10 @@ impl GameMode for ArenaMode {
     fn update(&mut self,
 	      _dt_seconds: f32,
 	      _canvas: &Canvas2D) -> Option<ModeTag> {
+
+	if is_key_pressed(KeyCode::Escape) {
+	    return Some(ModeTag::MenuMode);
+	}
 	None
     }
 
