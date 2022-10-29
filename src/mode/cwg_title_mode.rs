@@ -45,6 +45,13 @@ impl GameMode for CwgTitleMode {
 	if self.elapsed_seconds >= self.display_seconds {
 	    return Some(ModeTag::MenuMode);
 	}
+
+	match get_char_pressed() {
+	    None => {},
+	    Some(_) => { return Some(ModeTag::MenuMode); }
+	}
+
+	
 	/*
 
 	for e in events {
