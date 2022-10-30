@@ -57,11 +57,22 @@ impl CarBinding {
     }
 
     fn get_kb_wasd_control_input(&self) -> CarControls {
+	let s = if is_key_down(KeyCode::A) {
+	    -1.0
+	} else {
+	    if is_key_down(KeyCode::D) {
+		1.0
+	    } else {
+		0.0
+	    }
+	};
+
 	CarControls {
-	    steering: 0.0,
-	    acceleration: 0.0,
-	    brake: 0.0
+	    steering: s,
+	    acceleration: if is_key_down(KeyCode::W) { 1.0 } else { 0.0 },
+	    brake: if is_key_down(KeyCode::S) { 1.0 } else {0.0}
 	}
+	
     }
 
     fn get_kb_arrow_control_input(&self) -> CarControls {
@@ -383,6 +394,23 @@ impl GameMode for ArenaMode {
 	    control_mode: CarControlMode::PlayerKBControlArrows,
 	    sprite: self.car_sprites[1],
 	});
+
+
+	self.cars.push(CarBinding {
+	    texture_params: DrawTextureParams {
+		dest_size: Some(Vec2 {x: 64.0,
+				      y: 32.0}),
+		source: None,
+		rotation: 0.0,
+		flip_x: false,
+		flip_y: false,
+		pivot: None
+	    },
+	    physics: Car::new(&Vec2f::new(1000.0, 560.0),
+			      -90.0),
+	    control_mode: CarControlMode::PlayerKBControlWasd,
+	    sprite: self.car_sprites[5],
+	});	
     }
 
     fn update(&mut self,
@@ -393,8 +421,8 @@ impl GameMode for ArenaMode {
 	    return Some(ModeTag::MenuMode);
 	}
 
-	for mut car in self.cars.iter_mut() {
-	    car.update(dt_seconds);
+	for car_binding in self.cars.iter_mut() {
+	    car_binding.update(dt_seconds);
 	}
 	
 	None

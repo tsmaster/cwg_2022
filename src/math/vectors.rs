@@ -59,4 +59,8 @@ impl Vec2f {
 	    y: self.y / m
 	}
     }
+
+    pub fn dot(&self, other:&Vec2f) -> f32 {
+	self.x * other.x + self.y * other.y
+    }
 }

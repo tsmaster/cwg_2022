@@ -17,6 +17,8 @@ pub struct Car {
     pub default_deceleration: f32, // m/s^2
     pub max_braking: f32, // m/s^2
 
+    pub drift_deceleration: f32,
+
     pub turning_circle_radius: f32, // m
 }
 
@@ -28,8 +30,9 @@ impl Car {
 	    heading_degrees: heading,
 	    max_acceleration: 20.0,
 	    top_speed: 60.0,
-	    default_deceleration: 0.25,
-	    max_braking: 1.5,
+	    default_deceleration: 2.5,
+	    drift_deceleration: 10.0,
+	    max_braking: 10.0,
 	    turning_circle_radius: 10.0,
 	}
     }
@@ -58,8 +61,41 @@ impl Car {
 	    self.velocity = self.velocity + delta_velocity;
 	} else if input.brake > 0.0 {
 	    // slow down due to braking
+	    let old_mag = self.velocity.magnitude();
+	    if old_mag > 0.0 {
+		let delta_velocity = self.velocity.normalized() * -1.0 * input.brake * self.max_braking * dt;
+		if delta_velocity.magnitude() >= self.velocity.magnitude() {
+		    self.velocity = Vec2f::ZERO;
+		} else {
+		    self.velocity = self.velocity + delta_velocity;
+		}
+	    }
 	} else {
 	    // slow down due to internal friction
+	    let old_mag = self.velocity.magnitude();
+	    if old_mag > 0.0 {
+		let delta_velocity = self.velocity.normalized() * -1.0 * self.default_deceleration * dt;
+		if delta_velocity.magnitude() >= self.velocity.magnitude() {
+		    self.velocity = Vec2f::ZERO;
+		} else {
+		    self.velocity = self.velocity + delta_velocity;
+		}
+	    }
+	}
+
+	// slow down due to drifting
+	let speed = self.velocity.magnitude();
+	if speed > 0.0 {
+	    let vel_hat = self.velocity.normalized();
+	    let heading_rad = degrees_to_radians(self.heading_degrees);
+	    let heading_hat = Vec2f::make_angle_mag(heading_rad, 1.0);
+	    let drift_angle_rad = f32::acos(vel_hat.dot(&heading_hat));
+	    let delta_velocity = vel_hat * -1.0 * f32::sin(drift_angle_rad) * dt * self.drift_deceleration;
+	    if delta_velocity.magnitude() >= speed {
+		self.velocity = Vec2f::ZERO;
+	    } else {
+		self.velocity = self.velocity + delta_velocity;
+	    }
 	}
 
 	if self.velocity.magnitude() > self.top_speed {
