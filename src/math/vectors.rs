@@ -1,6 +1,8 @@
 // math/vectors.rs
 
 use std::ops::Add;
+use std::ops::AddAssign;
+use std::ops::Sub;
 use std::ops::Mul;
 
 #[derive(Debug, Clone, Copy)]
@@ -19,6 +21,26 @@ impl Add for Vec2f {
 	}
     }
 }
+
+impl AddAssign for Vec2f {
+    fn add_assign(&mut self, other: Self) {
+        *self = Self {
+            x: self.x + other.x,
+            y: self.y + other.y,
+        };
+    }
+}
+
+impl Sub for Vec2f {
+    type Output = Self;
+
+    fn sub(self, rhs: Self) -> Self::Output {
+	Self {
+	    x: self.x - rhs.x,
+	    y: self.y - rhs.y
+	}
+    }
+}    
 
 impl Mul<f32> for Vec2f {
     type Output = Self;
@@ -52,12 +74,22 @@ impl Vec2f {
 	f32::sqrt(self.x * self.x + self.y * self.y)
     }
 
+    pub fn angle(&self) -> f32 {
+	f32::atan2(self.y, self.x)
+    }
+
     pub fn normalized(&self) -> Vec2f {
 	let m = self.magnitude();
 	Vec2f {
 	    x: self.x / m,
 	    y: self.y / m
 	}
+    }
+
+    pub fn rotated(&self, rad: f32) -> Vec2f {
+	let m = self.magnitude();
+	let a = self.angle();
+	Vec2f::make_angle_mag(a + rad, m)
     }
 
     pub fn dot(&self, other:&Vec2f) -> f32 {
