@@ -95,4 +95,9 @@ impl Vec2f {
     pub fn dot(&self, other:&Vec2f) -> f32 {
 	self.x * other.x + self.y * other.y
     }
+
+    pub fn lerp(&self, other:&Vec2f, t:f32) -> Vec2f {
+	let delta = *other - *self;
+	*self + delta * t
+    }
 }
